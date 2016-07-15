@@ -1,0 +1,32 @@
+html {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+#root {
+  overflow: hidden;
+}
+
+.donate__container {
+  padding: 70px;
+  overflow: auto;
+}
+
+.donate__checkout,
+.donate__payment {
+  margin:0 auto;
+  width: 50%;
+  padding: 0 10px;
+}
