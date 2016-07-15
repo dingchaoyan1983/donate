@@ -1,25 +1,34 @@
 import $ from 'jquery';
-import { saveOrUpdateItem } from '../storage';
+import { saveOrUpdateItem, getAllItems, getTransition } from '../storage';
 
 //actions consts
 const CHECKOUT_SUCCESS = Symbol('checkout success');
 const DESTORY_PAYMENT_FORM = Symbol('destory payment form');
 const PAYMENT_SUCCESS = Symbol('payment success');
+const SHOW_THANKS = Symbol('show thanks');
 
-export function fetchCheckoutId(donator, currency, amount) {
+export function showPaymentOrThanks(donator, currency, amount) {
   return function(dispatch) {
-    $.get('/api/checkout', {
-      amount,
-      currency
-    }).then(function(data) {
-      dispatch({
-        type: CHECKOUT_SUCCESS,
-        checkoutId: data.id,
-        donator,
-        currency,
-        amount
-      });
-    })
+    const allDonators = getAllItems();
+    if ( allDonators.some(item => item.donator ===  donator)) {
+      const transition = getTransition(donator);
+      transition.showThanks = true;
+      dispatch({type: SHOW_THANKS, ...transition});
+    } else {
+      $.get('/api/checkout', {
+        amount,
+        currency
+      }).then(function(data) {
+        dispatch({
+          type: CHECKOUT_SUCCESS,
+          checkoutId: data.id,
+          donator,
+          currency,
+          amount,
+          showThanks: false
+        });
+      })
+    }
   }
 }
 
@@ -53,6 +62,7 @@ export default function(state = initialState, action) {
   switch (action.type) {
     case CHECKOUT_SUCCESS:
     case DESTORY_PAYMENT_FORM:
+    case SHOW_THANKS:
       delete action.type;
       return {...state, ...action};
     case PAYMENT_SUCCESS:

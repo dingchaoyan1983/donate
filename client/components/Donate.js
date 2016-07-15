@@ -1,6 +1,7 @@
 import React from 'react';
 import Checkout from './Checkout';
 import Payment from './Payment';
+import Thanks from './Thanks';
 
 export default class Donate extends React.Component {
   constructor(props, context) {
@@ -9,24 +10,27 @@ export default class Donate extends React.Component {
 
   get showPaymentForm() {
     // Get the checkoutId from currentTransition state
-    const { checkoutId } = this.props.currentTransition;
+    const { checkoutId, showThanks } = this.props.currentTransition;
     // If checkoutId is got from server-to-server side
     // Show the payment form.
-    return Boolean(checkoutId);
+
+    return !showThanks && Boolean(checkoutId);
   }
 
   render() {
-    let paymentForm = null;
+    let secondStep = null;
 
     if (this.showPaymentForm) {
-      paymentForm = <Payment {...this.props}/>
+      secondStep = <Payment {...this.props}/>;
+    } else if (this.props.currentTransition.showThanks) {
+      secondStep = <Thanks {...this.props}/>;
     }
 
     return (
       <div className="container donate__container">
         <Checkout {...this.props}/>
-        { paymentForm }
+        { secondStep }
       </div>
-      );
+    );
   }
 }

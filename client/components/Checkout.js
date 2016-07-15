@@ -88,9 +88,17 @@ export default class Checkout extends React.Component {
           </div>
           {this.amountErrorTips}
         </div>
-        <button type="button" className="btn btn-success pull-right" onClick={this.onDonate}>Donate</button>
+        <button type="button" className="btn btn-success pull-right" onClick={this.onDonate} disabled={ !(this.isDonatorValid && this.isAmountValid) }>Donate</button>
       </div>
     );
+  }
+
+  componentWillReceiveProps(props) {
+    this.setState({
+      donator: props.currentTransition.donator,
+      currency: props.currentTransition.currency,
+      amount: props.currentTransition.amount
+    });
   }
 
   onChangeDonator(event) {
@@ -112,9 +120,10 @@ export default class Checkout extends React.Component {
   }
 
   onDonate() {
+    //double check whether the donate button can be clicked.
     if(this.isDonatorValid && this.isAmountValid) {
       const { donator, currency, amount } = this.state;
-      this.props.fetchCheckoutId(donator, currency, amount);
+      this.props.showPaymentOrThanks(donator, currency, amount);
     }
   }
 }

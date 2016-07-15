@@ -1,6 +1,7 @@
 const { localStorage } = window;
 
 const KEY_PREFIX = 'donate_';
+const regExp = RegExp(`^${KEY_PREFIX}`);
 
 export function saveOrUpdateItem(userName, data) {
   let contain = false;
@@ -17,15 +18,18 @@ export function saveOrUpdateItem(userName, data) {
   }
 
   localStorage.setItem(`${KEY_PREFIX}${userName}`, JSON.stringify(data));
+}
 
+export function getTransition(userName) {
+  return JSON.parse(localStorage.getItem(`${KEY_PREFIX}${userName}`));
 }
 
 export function getAllItems() {
   const arr = [];
 
   for (let key in localStorage) {
-    if (key.startWith(KEY_PREFIX)) {
-      arr.push(JSON.parse(localStorage.get(key)));
+    if (regExp.test(key)) {
+      arr.push(JSON.parse(localStorage.getItem(key)));
     }
   }
 
