@@ -4,9 +4,6 @@ var querystring = require('querystring');
 module.exports = function(amount, currency, cb) {
   var path='/v1/checkouts';
 
-  console.log(amount);
-  console.log(currency);
-  
   var data = querystring.stringify({
 		'authentication.userId' : '8a8294174b7ecb28014b9699220015cc',
 		'authentication.password' : 'sy6KJsT8',

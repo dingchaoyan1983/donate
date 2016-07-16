@@ -3,13 +3,14 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var path = require('path');
+var distDir = 'dist';
 
 module.exports = {
   entry: {
     app: path.join(__dirname, 'client', 'index.js')
   },
   output: {
-    path: 'public',
+    path: distDir + '/public',
     filename: '[name].[hash].js'
   },
   module: {
@@ -54,7 +55,7 @@ module.exports = {
         collapseWhitespace: false
       }
     }),
-    new CleanWebpackPlugin(['./public']),
+    new CleanWebpackPlugin(['./'+ distDir + '/public']),
     new ExtractTextPlugin('[name].[contenthash].css', {
       allChunks: true
     })
