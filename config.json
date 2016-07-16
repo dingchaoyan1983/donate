@@ -2,7 +2,8 @@
   "payOnServer": {
     "protocol": "https:",
     "host": "test.oppwa.com",
-    "checkoutPath": "/v1/checkouts"
+    "checkoutPath": "/v1/checkouts",
+    "paymentWidgets": "/v1/paymentWidgets"
   },
   "authentication": {
     "userId": "8a8294174b7ecb28014b9699220015cc",

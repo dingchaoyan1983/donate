@@ -10,7 +10,7 @@ const SHOW_THANKS = Symbol('show thanks');
 export function showPaymentOrThanks(donator, currency, amount) {
   return function(dispatch) {
     const allDonators = getAllItems();
-    if ( allDonators.some(item => item.donator ===  donator)) {
+    if ( allDonators.some(item => ((item.donator ===  donator) && (new Date().getTime() - new Date(item.timestamp).getTime() < 60*60*1000)))) {
       const transition = getTransition(donator);
       transition.showThanks = true;
       dispatch({type: SHOW_THANKS, ...transition});

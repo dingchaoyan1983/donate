@@ -1,4 +1,8 @@
 import React from 'react';
+import config from 'json-loader!../../../config.json';
+
+
+const { protocol, host, paymentWidgets } = config.payOnServer;
 
 export default class Payment extends React.Component {
   render() {
@@ -42,7 +46,7 @@ export default class Payment extends React.Component {
       scriptTag.remove();
     }
 
-    scriptTag.setAttribute('src', `https://test.oppwa.com/v1/paymentWidgets.js?checkoutId=${checkoutId}`);
+    scriptTag.setAttribute('src', `${protocol}//${host}${paymentWidgets}.js?checkoutId=${checkoutId}`);
 
     document.head.appendChild(scriptTag);
   }
