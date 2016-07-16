@@ -7,7 +7,7 @@ var distDir = 'dist';
 
 module.exports = {
   entry: {
-    app: path.join(__dirname, 'client', 'index.js')
+    app: path.join(__dirname, 'src', 'client', 'index.js')
   },
   output: {
     path: distDir + '/public',
@@ -47,7 +47,7 @@ module.exports = {
   debug: true,
   plugins: [
     new HtmlWebpackPlugin({
-      template: './client/index.html',
+      template: './src/client/index.html',
       hash: false,
       filename: 'index.html',
       inject: 'body',

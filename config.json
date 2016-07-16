@@ -1,5 +1,4 @@
 {
-  "test": 11,
   "payOnServer": {
     "protocol": "https:",
     "host": "test.oppwa.com",
