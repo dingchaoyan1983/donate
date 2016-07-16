@@ -5,6 +5,7 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 import currentTransition from './reducers/currentTransition';
 import { Provider } from 'react-redux';
+import 'file-loader!../../node_modules/bootstrap/dist/css/bootstrap.css';
 import './styles/index.scss';
 
 let middlewares = [thunk];
