@@ -31,7 +31,7 @@ module.exports = {
       // },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract("style-loader", "css-loader?sourceMap", "sass-loader?includePaths[]=./node_modules")
+        loader: ExtractTextPlugin.extract("style-loader", "css-loader?sourceMap&minimize", "sass-loader?includePaths[]=./node_modules")
       },
       {
         test: /\.css$/,
@@ -59,6 +59,15 @@ module.exports = {
     new CleanWebpackPlugin(['./'+ distDir + '/public']),
     new ExtractTextPlugin('[name].[contenthash].css', {
       allChunks: true
+    }),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        unused: true,
+        dead_code: true,
+        warnings: false
+      }
     })
   ],
   eslint: {
