@@ -24,6 +24,7 @@ export function showPaymentOrThanks(donator, currency, amount) {
       dispatch({type: SHOW_THANKS, ...transition});
     } else {
       dispatch({type: FROZE_DONATE_FORM});
+      dispatch(destoryPaymentForm());
       $.get('/api/checkout', {
         amount,
         currency
