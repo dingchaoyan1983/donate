@@ -8,7 +8,11 @@ router.get('/checkout', function (req, res, next){
   const currency = req.param('currency');
 
   checkoutService(amount, currency, (json) => {
-    res.json(json);
+    if (json.result.code === '000.200.100') {
+      res.json(json);
+    } else {
+      res.status(500).send({ error: 'checkout failed!' });
+    }
   });
 });
 
