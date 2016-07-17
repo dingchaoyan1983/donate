@@ -29,7 +29,8 @@ export default class Payment extends React.Component {
           timestamp: data.timestamp,
           ndc: data.ndc
         });
-      }
+      },
+      onReady: () => this.props.restoreDonateForm() //if the payment widget avalid, resotre the checkout form
     };
 
     const { checkoutId } = this.props.currentTransition;
@@ -40,6 +41,7 @@ export default class Payment extends React.Component {
     scriptTag.onerror = () => {
       scriptTag.remove();
       this.props.destoryPaymentForm();
+      this.props.restoreDonateForm();
     }
 
     scriptTag.onload = function() {

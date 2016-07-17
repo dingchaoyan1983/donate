@@ -65,17 +65,18 @@ export default class Checkout extends React.Component {
 
   render() {
     const {donator, currency, amount} = this.state;
+    const { frozeDonateForm } = this.props.currentTransition;
 
     return (
       <div className="container donate__checkout">
         <div className={classnames('form-group', this.isDonatorValid ? '' : 'has-error')}>
           <label className="control-label" htmlFor="donate-form__donator">Donator</label>
-          <input type="text" className="form-control" id="donate-form__donator" placeholder="your name" value={donator} onChange={this.onChangeDonator} />
+          <input type="text" className="form-control" id="donate-form__donator" placeholder="your name" value={donator} disabled = {frozeDonateForm} onChange={this.onChangeDonator} />
           {this.donatorErrorTips}
         </div>
         <div className="form-group">
           <label className="control-label" htmlFor="donate-form__currency">Currency</label>
-          <select id="donate-form__currency" className="form-control" value={currency} onChange={this.onChangeCurrency}>
+          <select id="donate-form__currency" className="form-control" value={currency}  disabled = {frozeDonateForm}  onChange={this.onChangeCurrency}>
             <option value="EUR">€</option>
             <option value="USD">$</option>
           </select>
@@ -84,11 +85,11 @@ export default class Checkout extends React.Component {
           <label className="control-label" htmlFor="donate-form__amount">Amount</label>
           <div className="input-group">
             <div className="input-group-addon">{CURRENCY_SYMBOL_MAPPDING[currency]}</div>
-            <input type="amount" className="form-control" id="donate-form__amount" placeholder="0.00" value={amount} onChange={this.onChangeAmount} />
+            <input type="amount" className="form-control" id="donate-form__amount" placeholder="0.00" value={amount}  disabled = {this.props.currentTransition.frozeDonateForm }  onChange={this.onChangeAmount} />
           </div>
           {this.amountErrorTips}
         </div>
-        <button type="button" className="btn btn-success pull-right" onClick={this.onDonate} disabled={ !(this.isDonatorValid && this.isAmountValid) }>Donate</button>
+        <button type="button" className="btn btn-success pull-right" onClick={this.onDonate} disabled={ !(this.isDonatorValid && this.isAmountValid) || frozeDonateForm}>Donate</button>
       </div>
     );
   }

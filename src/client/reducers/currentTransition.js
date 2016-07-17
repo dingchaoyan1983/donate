@@ -6,6 +6,14 @@ const CHECKOUT_SUCCESS = Symbol('checkout success');
 const DESTORY_PAYMENT_FORM = Symbol('destory payment form');
 const PAYMENT_SUCCESS = Symbol('payment success');
 const SHOW_THANKS = Symbol('show thanks');
+const FROZE_DONATE_FORM = Symbol('froze donate from');
+const RESTORE_DONATE_FORM = Symbol('restore donate form');
+
+export function restoreDonateForm() {
+  return {
+    type: RESTORE_DONATE_FORM
+  }
+}
 
 export function showPaymentOrThanks(donator, currency, amount) {
   return function(dispatch) {
@@ -15,10 +23,11 @@ export function showPaymentOrThanks(donator, currency, amount) {
       transition.showThanks = true;
       dispatch({type: SHOW_THANKS, ...transition});
     } else {
+      dispatch({type: FROZE_DONATE_FORM});
       $.get('/api/checkout', {
         amount,
         currency
-      }).then(function(data) {
+      }).done(function(data) {
         dispatch({
           type: CHECKOUT_SUCCESS,
           checkoutId: data.id,
@@ -27,6 +36,8 @@ export function showPaymentOrThanks(donator, currency, amount) {
           amount,
           showThanks: false
         });
+      }).fail(function() {
+        dispatch(restoreDonateForm());
       })
     }
   }
@@ -55,7 +66,9 @@ const initialState = {
   buildNumber: '',
   timestamp: '',
   ndc: '',
-  donator: ''
+  donator: '',
+  showThanks: false,
+  frozeDonateForm: false
 };
 
 export default function(state = initialState, action) {
@@ -67,6 +80,10 @@ export default function(state = initialState, action) {
       return {...state, ...action};
     case PAYMENT_SUCCESS:
       return {...initialState};
+    case FROZE_DONATE_FORM:
+      return {...state, frozeDonateForm: true};
+    case RESTORE_DONATE_FORM:
+      return {...state, frozeDonateForm: false};
     default:
       return state;
   }
