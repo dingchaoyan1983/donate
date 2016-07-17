@@ -8,6 +8,7 @@ const PAYMENT_SUCCESS = Symbol('payment success');
 const SHOW_THANKS = Symbol('show thanks');
 const FROZE_DONATE_FORM = Symbol('froze donate from');
 const RESTORE_DONATE_FORM = Symbol('restore donate form');
+const SYNC_UP_DONATE = Symbol('sync up danator information');
 
 export function restoreDonateForm() {
   return {
@@ -15,8 +16,18 @@ export function restoreDonateForm() {
   }
 }
 
+export function syncup(donator, currency, amount) {
+  return {
+    type: SYNC_UP_DONATE,
+    donator,
+    currency,
+    amount
+  };
+}
+
 export function showPaymentOrThanks(donator, currency, amount) {
   return function(dispatch) {
+    dispatch(syncup(donator, currency, amount))
     const allDonators = getAllItems();
     if ( allDonators.some(item => ((item.donator ===  donator) && (new Date().getTime() - new Date(item.timestamp).getTime() < 60*60*1000)))) {
       const transition = getTransition(donator);
@@ -77,6 +88,7 @@ export default function(state = initialState, action) {
     case CHECKOUT_SUCCESS:
     case DESTORY_PAYMENT_FORM:
     case SHOW_THANKS:
+    case SYNC_UP_DONATE:
       delete action.type;
       return {...state, ...action};
     case PAYMENT_SUCCESS:
