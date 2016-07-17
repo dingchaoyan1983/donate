@@ -68,7 +68,7 @@ export default class Checkout extends React.Component {
     const { frozeDonateForm } = this.props.currentTransition;
 
     return (
-      <div className="form-horizontal donate__checkout">
+      <div className="form-horizontal donate__checkout clearfix">
         <div className={classnames('form-group', this.isDonatorValid ? '' : 'has-error')}>
           <label className="control-label col-sm-4" htmlFor="donate-form__donator">Donator</label>
           <div className="col-sm-8">
