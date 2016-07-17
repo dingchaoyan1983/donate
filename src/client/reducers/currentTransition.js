@@ -74,7 +74,7 @@ export function paymentSuccess(data) {
 const initialState = {
   checkoutId: '',
   amount: 1,
-  currency: 'USD',
+  currency: 'EUR',
   buildNumber: '',
   timestamp: '',
   ndc: '',
