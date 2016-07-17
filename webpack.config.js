@@ -7,7 +7,8 @@ var distDir = 'dist';
 
 module.exports = {
   entry: {
-    app: path.join(__dirname, 'src', 'client', 'index.js')
+    app: path.join(__dirname, 'src', 'client', 'index.js'),
+    vendor: ['react', 'redux', 'react-redux', 'jquery']
   },
   output: {
     path: distDir + '/public',
@@ -19,6 +20,7 @@ module.exports = {
         test: /\.(js|jsx)$/,
         loader: 'babel',
         exclude: /node_modules/,
+        sourceMaps: false,
         query: {
           cacheDirectory: true,
           presets: ['es2015', 'stage-0', 'react']
@@ -31,11 +33,11 @@ module.exports = {
       // },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract("style-loader", "css-loader?sourceMap&minimize", "sass-loader?includePaths[]=./node_modules")
+        loader: ExtractTextPlugin.extract("style-loader", "css-loader?&minimize", "sass-loader?includePaths[]=./node_modules")
       },
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract("style-loader", "css-loader?sourceMap")
+        loader: ExtractTextPlugin.extract("style-loader", "css-loader")
       },
       { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file" },
       { test: /\.(woff|woff2)$/, loader:"url?prefix=font/&limit=5000" },
@@ -57,6 +59,9 @@ module.exports = {
       }
     }),
     new CleanWebpackPlugin(['./'+ distDir + '/public']),
+    new webpack.optimize.CommonsChunkPlugin({
+      names: ['vendor']
+    }),
     new ExtractTextPlugin('[name].[contenthash].css', {
       allChunks: true
     }),
@@ -67,7 +72,8 @@ module.exports = {
         unused: true,
         dead_code: true,
         warnings: false
-      }
+      },
+      sourceMap: false
     })
   ],
   eslint: {
