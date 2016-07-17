@@ -8,7 +8,7 @@ export default class Payment extends React.Component {
   render() {
     const shopperResultUrl = `${document.location.href}`;
     return (
-      <div className="container donate__payment">
+      <div className="jumbotron donate__payment">
         <form action={shopperResultUrl} className="paymentWidgets">VISA MASTER AMEX</form>
       </div>
       );
