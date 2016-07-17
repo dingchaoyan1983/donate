@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import { saveOrUpdateItem, getAllItems, getTransition } from '../storage';
+import moment from 'moment';
 
 //actions consts
 const CHECKOUT_SUCCESS = Symbol('checkout success');
@@ -29,12 +30,16 @@ export function showPaymentOrThanks(donator, currency, amount) {
   return function(dispatch) {
     dispatch(syncup(donator, currency, amount))
     const allDonators = getAllItems();
-    if ( allDonators.some(item => ((item.donator ===  donator) && (new Date().getTime() - new Date(item.timestamp).getTime() < 60*60*1000)))) {
+    if (allDonators.some(item => ((item.donator === donator) && (moment(item.timestamp).add(1, 'hours').isAfter(moment()))))) {
       const transition = getTransition(donator);
       transition.showThanks = true;
-      dispatch({type: SHOW_THANKS, ...transition});
+      dispatch({
+        type: SHOW_THANKS, ...transition
+      });
     } else {
-      dispatch({type: FROZE_DONATE_FORM});
+      dispatch({
+        type: FROZE_DONATE_FORM
+      });
       dispatch(destoryPaymentForm());
       $.get('/api/checkout', {
         amount,
@@ -65,10 +70,10 @@ export function destoryPaymentForm() {
 
 // when payment successed, we need reset the form and store the transitions to local storage
 export function paymentSuccess(data) {
-    saveOrUpdateItem(data.donator, data);
-    return {
-      type: PAYMENT_SUCCESS
-    };
+  saveOrUpdateItem(data.donator, data);
+  return {
+    type: PAYMENT_SUCCESS
+  };
 }
 
 const initialState = {
@@ -90,13 +95,23 @@ export default function(state = initialState, action) {
     case SHOW_THANKS:
     case SYNC_UP_DONATE:
       delete action.type;
-      return {...state, ...action};
+      return {
+        ...state, ...action
+      };
     case PAYMENT_SUCCESS:
-      return {...initialState};
+      return {
+        ...initialState
+      };
     case FROZE_DONATE_FORM:
-      return {...state, frozeDonateForm: true};
+      return {
+        ...state,
+        frozeDonateForm: true
+      };
     case RESTORE_DONATE_FORM:
-      return {...state, frozeDonateForm: false};
+      return {
+        ...state,
+        frozeDonateForm: false
+      };
     default:
       return state;
   }
