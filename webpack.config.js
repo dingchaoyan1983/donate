@@ -51,6 +51,7 @@ module.exports = {
       hash: false,
       filename: 'index.html',
       inject: 'body',
+      favicon: './src/client/styles/favicon.png',
       minify: {
         collapseWhitespace: false
       }
