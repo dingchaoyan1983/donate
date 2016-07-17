@@ -68,26 +68,32 @@ export default class Checkout extends React.Component {
     const { frozeDonateForm } = this.props.currentTransition;
 
     return (
-      <div className="container donate__checkout">
+      <div className="form-horizontal donate__checkout">
         <div className={classnames('form-group', this.isDonatorValid ? '' : 'has-error')}>
-          <label className="control-label" htmlFor="donate-form__donator">Donator</label>
-          <input type="text" className="form-control" id="donate-form__donator" placeholder="your name" value={donator} disabled = {frozeDonateForm} onChange={this.onChangeDonator} />
-          {this.donatorErrorTips}
+          <label className="control-label col-sm-4" htmlFor="donate-form__donator">Donator</label>
+          <div className="col-sm-8">
+            <input type="text" className="form-control col-sm-8" id="donate-form__donator" placeholder="your name" value={donator} disabled = {frozeDonateForm} onChange={this.onChangeDonator} />
+            {this.donatorErrorTips}
+          </div>
         </div>
         <div className="form-group">
-          <label className="control-label" htmlFor="donate-form__currency">Currency</label>
-          <select id="donate-form__currency" className="form-control" value={currency}  disabled = {frozeDonateForm}  onChange={this.onChangeCurrency}>
-            <option value="EUR">€</option>
-            <option value="USD">$</option>
-          </select>
+          <label className="control-label col-sm-4" htmlFor="donate-form__currency">Currency</label>
+          <div className="col-sm-8">
+            <select id="donate-form__currency" className="form-control" value={currency}  disabled = {frozeDonateForm}  onChange={this.onChangeCurrency}>
+              <option value="EUR">€</option>
+              <option value="USD">$</option>
+            </select>
+          </div>
         </div>
         <div className={classnames('form-group', this.isAmountValid ? '' : 'has-error')}>
-          <label className="control-label" htmlFor="donate-form__amount">Amount</label>
-          <div className="input-group">
-            <div className="input-group-addon">{CURRENCY_SYMBOL_MAPPDING[currency]}</div>
-            <input type="amount" className="form-control" id="donate-form__amount" placeholder="0.00" value={amount}  disabled = {this.props.currentTransition.frozeDonateForm }  onChange={this.onChangeAmount} />
+          <label className="control-label col-sm-4" htmlFor="donate-form__amount">Amount</label>
+          <div className="col-sm-8">
+            <div className="input-group">
+              <div className="input-group-addon">{CURRENCY_SYMBOL_MAPPDING[currency]}</div>
+              <input type="amount" className="form-control donate-form__amount" id="donate-form__amount" placeholder="0.00" value={amount}  disabled = {this.props.currentTransition.frozeDonateForm }  onChange={this.onChangeAmount} />
+            </div>
+            {this.amountErrorTips}
           </div>
-          {this.amountErrorTips}
         </div>
         <button type="button" className="btn btn-success pull-right" onClick={this.onDonate} disabled={ !(this.isDonatorValid && this.isAmountValid) || frozeDonateForm}>Donate</button>
       </div>
