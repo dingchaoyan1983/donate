@@ -21,15 +21,15 @@ export default class Donate extends React.Component {
     let secondStep = null;
 
     if (this.showPaymentForm) {
-      secondStep = <Payment {...this.props}/>;
+      secondStep = <Payment {...this.props} />;
     } else if (this.props.currentTransition.showThanks) {
-      secondStep = <Thanks {...this.props}/>;
+      secondStep = <Thanks {...this.props} />;
     }
 
     return (
       <div className="container donate__container">
-        <Checkout {...this.props}/>
-        { secondStep }
+        <Checkout {...this.props} />
+        {secondStep}
       </div>
     );
   }

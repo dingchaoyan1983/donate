@@ -1,0 +1,4 @@
+{
+  "name": "donate",
+  "script": "dist/index.js"
+}

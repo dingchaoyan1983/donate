@@ -5,15 +5,6 @@ import config from 'json-loader!../../../config.json';
 const { protocol, host, paymentWidgets } = config.payOnServer;
 
 export default class Payment extends React.Component {
-  render() {
-    const shopperResultUrl = `${document.location.href}`;
-    return (
-      <div className="jumbotron donate__payment">
-        <form action={shopperResultUrl} className="paymentWidgets">VISA MASTER AMEX</form>
-      </div>
-      );
-  }
-
   componentDidMount() {
     this.generatePaymentWidgets();
   }
@@ -51,5 +42,14 @@ export default class Payment extends React.Component {
     scriptTag.setAttribute('src', `${protocol}//${host}${paymentWidgets}.js?checkoutId=${checkoutId}`);
 
     document.head.appendChild(scriptTag);
+  }
+
+  render() {
+    const shopperResultUrl = `${document.location.href}`;
+    return (
+      <div className="jumbotron donate__payment">
+        <form action={shopperResultUrl} className="paymentWidgets">VISA MASTER AMEX</form>
+      </div>
+      );
   }
 }

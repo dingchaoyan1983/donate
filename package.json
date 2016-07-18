@@ -4,7 +4,8 @@
   "private": true,
   "author": "chao.ding(Dane)<270422767@qq.com>",
   "scripts": {
-    "start": "./node_modules/pm2/bin/pm2 start ./dist/index.js",
+    "start": "./node_modules/pm2/bin/pm2 start ./pm2.json",
+    "stop": "./node_modules/pm2/bin/pm2 stop ./pm2.json",
     "build:client": "./node_modules/webpack/bin/webpack.js",
     "build:server": "./node_modules/gulp/bin/gulp.js"
   },

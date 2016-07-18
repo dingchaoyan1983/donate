@@ -1,4 +1,4 @@
-import "babel-polyfill";
+import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import DonateContainer from './containers/DonateContainer';
@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 import 'file-loader!../../node_modules/bootstrap/dist/css/bootstrap.css';
 import './styles/index.scss';
 
-let middlewares = [thunk];
+const middlewares = [thunk];
 const initialState = {};
 
 const store = createStore(
@@ -18,13 +18,13 @@ const store = createStore(
     }),
     initialState,
     applyMiddleware(...middlewares)
-  )
+  );
 
 const ROOT = document.getElementById('root');
 
 ReactDOM.render(
   <div>
-    <Provider store= {store}>
+    <Provider store={store}>
       <DonateContainer />
     </Provider>
   </div>,

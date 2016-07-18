@@ -6,7 +6,7 @@ const regExp = RegExp(`^${KEY_PREFIX}`);
 export function saveOrUpdateItem(userName, data) {
   let contain = false;
 
-  for(let key in localStorage) {
+  for (const key in localStorage) {
     if (key === `${KEY_PREFIX}${userName}`) {
       contain = true;
       break;
@@ -27,7 +27,7 @@ export function getTransition(userName) {
 export function getAllItems() {
   const arr = [];
 
-  for (let key in localStorage) {
+  for (const key in localStorage) {
     if (regExp.test(key)) {
       arr.push(JSON.parse(localStorage.getItem(key)));
     }
