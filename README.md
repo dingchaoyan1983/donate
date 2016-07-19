@@ -69,3 +69,9 @@ First I review the whole docs and example on PayOn. I don't understand clear for
 Luckily  there is a payment widget I can use, so I start to implement it with react and just want to wrap it with react component. the only problem for this widget is after we payment succeed, the whole page will refreshed, oh no, that is no what I want, finally I found a important config `useSummaryPage` to stop the page refresh. Finally I implement all requirements
 
 But I want to say, we can do much better for the payment widget. because it expose some globals, that is very painful.
+
+## Demo
+http://121.43.112.82:3000/
+
+## Snapshot
+![09d73579-8809-41cc-aa3e-1283e1c11b06](https://cloud.githubusercontent.com/assets/7593506/16953953/9c732386-4e01-11e6-9e61-66bee1e952e4.png)
