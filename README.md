@@ -50,8 +50,8 @@
 
 *before set up, you need change the `config.json` to you own configurations, such as server config and authentication config, after this you can do below steps:*
 
-1. You need install `node` (** precondition **)
-2. You need install `npm` (** precondition **)
+1. You need install `node` (**precondition**)
+2. You need install `npm` (**precondition**)
 3. run `npm install`
 4. run `npm run build:client`
 5. run `npm run build:server`
@@ -60,8 +60,8 @@
 
 ## Technical structure:
 
-* client side: React + Redux + Redux thunk
-* server side: express
+* client side: `React + Redux + Redux thunk + Redux Form`
+* server side: `express`
 
 ## Steps I resolve the problems:
 First I review the whole docs and example on PayOn. I don't understand clear for the first glance. So I review them again and again. I thought it is easy, that is if I found a API that we can post the amount, currency, card number, holder, cvv, the problem is resolved and there is a such api indeed, but I can't use it, because first I can't use it in front end side directly, because there are some issue with cross origin, second use it at the backend? but I need send the encrypted sensitive data, that is much hard, so I give up this solution.
