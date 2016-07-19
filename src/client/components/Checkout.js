@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import classnames from 'classnames';
 import { reduxForm } from 'redux-form';
 import { showPaymentOrThanks } from '../reducers/currentTransition';
@@ -53,7 +53,7 @@ const validate = values => {
 
 const fields = [ 'donator', 'currency', 'amount' ];
 
-class Checkout extends React.Component {
+class Checkout extends Component {
   render() {
     const { fields: { donator, currency, amount }, handleSubmit, submitting } = this.props;
     return (
@@ -92,6 +92,12 @@ class Checkout extends React.Component {
       </form>
     );
   }
+}
+
+Checkout.propTypes = {
+  fields: PropTypes.object.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  submitting: PropTypes.bool.isRequired
 }
 
 export default reduxForm(
