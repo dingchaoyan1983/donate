@@ -1,21 +1,14 @@
 import $ from 'jquery';
 import { saveOrUpdateItem, getAllItems, getTransition } from '../storage';
 import moment from 'moment';
+import {startSubmit, stopSubmit, reset} from 'redux-form';
 
 // actions consts
 const CHECKOUT_SUCCESS = Symbol('checkout success');
 const DESTORY_PAYMENT_FORM = Symbol('destory payment form');
 const PAYMENT_SUCCESS = Symbol('payment success');
 const SHOW_THANKS = Symbol('show thanks');
-const FROZE_DONATE_FORM = Symbol('froze donate from');
-const RESTORE_DONATE_FORM = Symbol('restore donate form');
 const SYNC_UP_DONATE = Symbol('sync up danator information');
-
-export function restoreDonateForm() {
-  return {
-    type: RESTORE_DONATE_FORM
-  };
-}
 
 export function syncup(donator, currency, amount) {
   return {
@@ -25,6 +18,10 @@ export function syncup(donator, currency, amount) {
     amount
   };
 }
+
+export const frozeDonateForm = startSubmit.bind(undefined, 'currentTransition');
+export const restoreDonateForm = stopSubmit.bind(undefined, 'currentTransition');
+export const resetDonateForm = reset.bind(undefined, 'currentTransition');
 
 // set checkoutId to empty string to destory payment form
 export function destoryPaymentForm() {
@@ -46,9 +43,7 @@ export function showPaymentOrThanks(donator, currency, amount) {
         type: SHOW_THANKS, ...transition
       });
     } else {
-      dispatch({
-        type: FROZE_DONATE_FORM
-      });
+      dispatch(frozeDonateForm())
       dispatch(destoryPaymentForm());
       $.get('/api/checkout', {
         amount,
@@ -79,8 +74,8 @@ export function paymentSuccess(data) {
 
 const initialState = {
   checkoutId: '',
-  amount: 1,
-  currency: 'EUR',
+  amount: '',
+  currency: '',
   buildNumber: '',
   timestamp: '',
   ndc: '',
@@ -101,16 +96,6 @@ export default function (state = initialState, action) {
     case PAYMENT_SUCCESS:
       return {
         ...initialState
-      };
-    case FROZE_DONATE_FORM:
-      return {
-        ...state,
-        frozeDonateForm: true
-      };
-    case RESTORE_DONATE_FORM:
-      return {
-        ...state,
-        frozeDonateForm: false
       };
     default:
       return state;

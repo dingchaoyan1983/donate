@@ -74,6 +74,9 @@ module.exports = {
         warnings: false
       },
       sourceMap: false
+    }),
+    new webpack.DefinePlugin({
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
     })
   ],
   eslint: {

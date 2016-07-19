@@ -1,138 +1,105 @@
 import React from 'react';
 import classnames from 'classnames';
+import { reduxForm } from 'redux-form';
+import { showPaymentOrThanks } from '../reducers/currentTransition';
 
 const CURRENCY_SYMBOL_MAPPDING = {
   EUR: '€',
   USD: '$'
 }
 
-export default class Checkout extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      donator: this.props.currentTransition.donator,
-      currency: this.props.currentTransition.currency,
-      amount: this.props.currentTransition.amount
-    };
+function onSubmit(values, dispatch) {
+  dispatch(showPaymentOrThanks(values.donator, values.currency, values.amount));
+}
 
-    this.onChangeDonator = this.onChangeDonator.bind(this);
-    this.onChangeAmount = this.onChangeAmount.bind(this);
-    this.onChangeCurrency = this.onChangeCurrency.bind(this);
-    this.onDonate = this.onDonate.bind(this);
-  }
-
-  get isDonatorValid() {
-    const donator = this.state.donator;
-    return /^[a-zA-Z0-9\s\.]+$/.test(donator);
-  }
-
-  get isAmountValid() {
-    const amount = this.state.amount;
-    return /^(\d*\.\d{1,2}|\d+)$/.test(amount) && amount < 100;
-  }
-
-  get donatorErrorTips() {
-    if (!this.isDonatorValid) {
-      return (
-        <span className="help-block">
-          Donator name should not <strong>empty</strong> or contain <strong>~!@#$%^&*()</strong> symbol.
-        </span>
-      );
-    } else {
-      return null;
-    }
-  }
-
-  get amountErrorTips() {
-    if (!this.isAmountValid) {
-      let errorString = 'Amount must be a currency number, such as 1.23';
-      const currencySymbol = CURRENCY_SYMBOL_MAPPDING[this.state.currency];
-
-      if (this.state.amount >= 100) {
-        errorString = `Thank you for donate more than 100${currencySymbol}, we only allow donate less than 100${currencySymbol}.`;
-      }
-
-      return (
-        <span className="help-block">
-          {errorString}
-        </span>
-      );
-    } else {
-      return null;
-    }
-  }
-
-
-  render() {
-    const {donator, currency, amount} = this.state;
-    const { frozeDonateForm } = this.props.currentTransition;
-
-    return (
-      <div className="jumbotron">
-        <div className="form-horizontal donate__checkout clearfix">
-          <div className={classnames('form-group', this.isDonatorValid ? '' : 'has-error')}>
-            <label className="control-label col-sm-4" htmlFor="donate-form__donator">Donator</label>
-            <div className="col-sm-8">
-              <input type="text" className="form-control col-sm-8" id="donate-form__donator" placeholder="your name" value={donator} disabled = {frozeDonateForm} onChange={this.onChangeDonator} />
-              {this.donatorErrorTips}
-            </div>
-          </div>
-          <div className="form-group">
-            <label className="control-label col-sm-4" htmlFor="donate-form__currency">Currency</label>
-            <div className="col-sm-8">
-              <select id="donate-form__currency" className="form-control" value={currency}  disabled = {frozeDonateForm}  onChange={this.onChangeCurrency}>
-                <option value="EUR">€</option>
-                <option value="USD">$</option>
-              </select>
-            </div>
-          </div>
-          <div className={classnames('form-group', this.isAmountValid ? '' : 'has-error')}>
-            <label className="control-label col-sm-4" htmlFor="donate-form__amount">Amount</label>
-            <div className="col-sm-8">
-              <div className="input-group">
-                <div className="input-group-addon">{CURRENCY_SYMBOL_MAPPDING[currency]}</div>
-                <input type="amount" className="form-control donate-form__amount" id="donate-form__amount" placeholder="0.00" value={amount}  disabled = {this.props.currentTransition.frozeDonateForm }  onChange={this.onChangeAmount} />
-              </div>
-              {this.amountErrorTips}
-            </div>
-          </div>
-          <button type="button" className="btn btn-success pull-right" onClick={this.onDonate} disabled={ !(this.isDonatorValid && this.isAmountValid) || frozeDonateForm}>Donate</button>
-        </div>
-      </div>
+const validate = values => {
+  const errors = {}
+  if (!values.donator) {
+    errors.donator = (
+      <span className="help-block">
+        Donator name should not <strong>empty</strong>.
+      </span>
+    );
+  } else if (!/^[a-zA-Z0-9\s\.]+$/.test(values.donator)) {
+    errors.username = (
+      <span className="help-block">
+        Donator name should not contain <strong>~!@#$%^&*()</strong> symbol.
+      </span>
     );
   }
 
-  componentWillReceiveProps(props) {
-    this.setState({
-      donator: props.currentTransition.donator,
-      currency: props.currentTransition.currency,
-      amount: props.currentTransition.amount
-    });
+  if (!values.amount) {
+    errors.amount = (
+      <span className="help-block">
+        Amount should not <strong>empty</strong>
+      </span>
+    );
+  } else if (!/^(\d*\.\d{1,2}|\d+)$/.test(values.amount) ) {
+    errors.amount = (
+      <span className="help-block">
+        Amount should be a valid currency number.
+      </span>
+    );
+  } else if (values.amount >= 100) {
+    errors.amount = (
+      <span className="help-block">
+        Amount should not greater than 100.
+      </span>
+    );
   }
 
-  onChangeDonator(event) {
-    this.setState({
-      donator: event.target.value
-    });
-  }
+  return errors
+};
 
-  onChangeAmount(event) {
-    this.setState({
-      amount: event.target.value
-    });
-  }
+const fields = [ 'donator', 'currency', 'amount' ];
 
-  onChangeCurrency(event) {
-    this.setState({
-      currency: event.target.value
-    });
-  }
-
-  onDonate() {
-    //double check whether the donate button can be clicked.
-    if(this.isDonatorValid && this.isAmountValid) {
-      const { donator, currency, amount } = this.state;
-      this.props.showPaymentOrThanks(donator, currency, amount);
-    }
+class Checkout extends React.Component {
+  render() {
+    const { fields: { donator, currency, amount }, handleSubmit, submitting } = this.props;
+    return (
+      <form onSubmit={handleSubmit}>
+        <div className="jumbotron">
+          <div className="form-horizontal donate__checkout clearfix">
+            <div className={classnames('form-group', donator.touched && donator.error ? 'has-error' : '')}>
+              <label className="control-label col-sm-4" htmlFor="donate-form__donator">Donator</label>
+              <div className="col-sm-8">
+                <input type="text" className="form-control col-sm-8" id="donate-form__donator" placeholder="your name" disabled={submitting} {...donator} />
+                {donator.error}
+              </div>
+            </div>
+            <div className="form-group">
+              <label className="control-label col-sm-4" htmlFor="donate-form__currency">Currency</label>
+              <div className="col-sm-8">
+                <select id="donate-form__currency" className="form-control" disabled={submitting}  {...currency}>
+                  <option selected={true} value="EUR">€</option>
+                  <option value="USD">$</option>
+                </select>
+              </div>
+            </div>
+            <div className={classnames('form-group', amount.touched && amount.error ? 'has-error' : '')}>
+              <label className="control-label col-sm-4" htmlFor="donate-form__amount">Amount</label>
+              <div className="col-sm-8">
+                <div className="input-group">
+                  <div className="input-group-addon">{CURRENCY_SYMBOL_MAPPDING[currency.value]}</div>
+                  <input type="amount" className="form-control donate-form__amount" id="donate-form__amount" placeholder="0.00" disabled={submitting} {...amount} />
+                </div>
+                {amount.error}
+              </div>
+            </div>
+            <button type="submit" className="btn btn-success pull-right" disabled={submitting}>Donate</button>
+          </div>
+        </div>
+      </form>
+    );
   }
 }
+
+export default reduxForm(
+  {
+    form: 'currentTransition',
+    fields,
+    validate,
+    initialValues: {currency: 'EUR'},
+    onSubmit
+  }
+)(Checkout);

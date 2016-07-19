@@ -1,7 +1,6 @@
 import React from 'react';
 import config from 'json-loader!../../../config.json';
 
-
 const { protocol, host, paymentWidgets } = config.payOnServer;
 
 export default class Payment extends React.Component {
@@ -20,8 +19,9 @@ export default class Payment extends React.Component {
           timestamp: data.timestamp,
           ndc: data.ndc
         });
+        this.props.resetDonateForm();
       },
-      onReady: () => this.props.restoreDonateForm() //if the payment widget avalid, resotre the checkout form
+      onReady: () => this.props.restoreDonateForm() // if the payment widget avalid, resotre the checkout form
     };
 
     const { checkoutId } = this.props.currentTransition;

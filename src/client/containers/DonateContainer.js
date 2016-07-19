@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
 import Donate from '../components/Donate';
 import {
-  showPaymentOrThanks,
   destoryPaymentForm,
   paymentSuccess,
-  restoreDonateForm
+  restoreDonateForm,
+  frozeDonateForm,
+  resetDonateForm
 } from '../reducers/currentTransition';
 
 const mapStateToProps = (state) => ({
@@ -12,10 +13,11 @@ const mapStateToProps = (state) => ({
 });
 
 const mapActionCreators = {
-  showPaymentOrThanks,
   destoryPaymentForm,
   paymentSuccess,
-  restoreDonateForm
+  restoreDonateForm,
+  frozeDonateForm,
+  resetDonateForm
 };
 
 export default connect(mapStateToProps, mapActionCreators)(Donate);
