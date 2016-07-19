@@ -71,7 +71,8 @@ Luckily  there is a payment widget I can use, so I start to implement it with re
 But I want to say, we can do much better for the payment widget. because it expose some globals, that is very painful.
 
 ## Demo
-http://121.43.112.82:3000/
+
+<a href="http://121.43.112.82:3000/" target="_blank">http://121.43.112.82:3000/</a>
 
 ## Snapshot
 ![09d73579-8809-41cc-aa3e-1283e1c11b06](https://cloud.githubusercontent.com/assets/7593506/16953953/9c732386-4e01-11e6-9e61-66bee1e952e4.png)
