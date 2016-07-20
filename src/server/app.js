@@ -4,6 +4,8 @@ import logger from 'morgan';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser'
 import routes from './routes/index';
+import compression from 'compression';
+
 
 const app = express();
 
@@ -18,6 +20,8 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+// compress all requests
+app.use(compression());
 
 app.use('/api', routes);
 
