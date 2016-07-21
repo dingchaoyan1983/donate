@@ -46,6 +46,10 @@
 |               |---index.js: express server startup entry
 ```
 
+## build
+* development build: `npm run build:client`
+* production build: `npm run build:client:prod`
+
 ## Set Up
 
 *before set up, you need change the `config.json` to you own configurations, such as server config and authentication config, after this you can do below steps:*

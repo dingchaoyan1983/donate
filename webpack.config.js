@@ -4,8 +4,14 @@ var CleanWebpackPlugin = require('clean-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var path = require('path');
 var distDir = 'dist';
+var cssLoader = 'css?sourceMap&-minimize';
 
-module.exports = {
+if (process.env.NODE_ENV === 'production') {
+  cssLoader = 'css?-sourceMap&minimize';
+}
+
+var config = {
+  devtool: 'inline-source-map',
   entry: {
     app: path.join(__dirname, 'src', 'client', 'index.js'),
     vendor: ['react', 'redux', 'react-redux', 'jquery']
@@ -33,16 +39,16 @@ module.exports = {
       // },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract("style", "css!sass")
+        loader: ExtractTextPlugin.extract('style', cssLoader + '!sass')
       },
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract("style", "css")
+        loader: ExtractTextPlugin.extract('style', cssLoader)
       },
-      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file" },
-      { test: /\.(woff|woff2)$/, loader:"url?prefix=font/&limit=5000" },
-      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream" },
-      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=image/svg+xml" }
+      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file' },
+      { test: /\.(woff|woff2)$/, loader:'url?prefix=font/&limit=5000' },
+      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=application/octet-stream' },
+      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml' }
     ]
   },
   debug: true,
@@ -66,19 +72,24 @@ module.exports = {
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        unused: true,
-        dead_code: true,
-        warnings: false
-      },
-      sourceMap: false
-    }),
     new webpack.DefinePlugin({
-    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production')
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'production')
     })
   ],
   eslint: {
     configFile: './.eslintrc'
   }
 };
+
+if (process.env.NODE_ENV === 'production') {
+  config.plugins.push(new webpack.optimize.UglifyJsPlugin({
+    compress: {
+      unused: true,
+      dead_code: true,
+      warnings: false
+    },
+    sourceMap: false
+  }));
+}
+
+module.exports = config;
