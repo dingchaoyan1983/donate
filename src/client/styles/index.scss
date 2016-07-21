@@ -34,15 +34,19 @@ body {
   display: none;
 }
 
-.donate__checkout .control-label {
-  text-align: left;
+.donate__checkout {
+  .control-label {
+    text-align: left;
+  }
 }
 
-.donate__payment .wpwl-form {
-  margin: 30px 0;
-  max-width: none;
-}
+.donate__payment {
+  .wpwl-form  {
+    margin: 30px 0;
+    max-width: none;
+  }
 
-.donate__payment .wpwl-label {
-  font-weight: bolder;
+  .wpwl-label {
+    font-weight: bolder;
+  }
 }

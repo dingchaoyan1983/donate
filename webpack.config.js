@@ -33,11 +33,11 @@ module.exports = {
       // },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract("style-loader", "css-loader?&minimize", "sass-loader?includePaths[]=./node_modules")
+        loader: ExtractTextPlugin.extract("style", "css!sass")
       },
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+        loader: ExtractTextPlugin.extract("style", "css")
       },
       { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file" },
       { test: /\.(woff|woff2)$/, loader:"url?prefix=font/&limit=5000" },
@@ -45,7 +45,6 @@ module.exports = {
       { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=image/svg+xml" }
     ]
   },
-  devtool: 'inline-source-map',
   debug: true,
   plugins: [
     new HtmlWebpackPlugin({
